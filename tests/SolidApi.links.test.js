@@ -158,11 +158,16 @@ const fileWithAcl = new File('child-file.txt', 'I am a child', 'text/plain', {
             await api.copyAclFileForItem(fileWithAcl.url, targetWithAcl.url)
             await expect(api.itemExists(targetWithAcl.acl.url)).resolves.toBe(true)
         })
-        test('modify paths in acl file of a file to match new location', async () => {
+        test.only('modify paths in acl file of a file to match new location', async () => {
             fileWithAcl.acl.content = createPseudoAcl(fileWithAcl.url, fileWithAcl.name, '')
             const expectedAcl = expectedPseudoAcl(targetWithAcl.name, '')
             await fileWithAcl.acl.reset()
             await api.copyAclFileForItem(fileWithAcl.url, targetWithAcl.url)
+            console.group('TEST modify paths in acl file of a file to match new location')
+            console.log(`api.copyAclFileForItem(${fileWithAcl.url}, ${targetWithAcl.url})`)
+            console.log('fileWithAcl.content', fileWithAcl.acl.content)
+            console.log('expectedAcl', expectedAcl)
+            console.groupEnd()
             await expect(api.get(targetWithAcl.acl.url).then(res => res.text())).resolves.toEqual(expectedAcl)
         })
         test('modify relative paths in acl file of a file to match new location agent:to_source', async () => {

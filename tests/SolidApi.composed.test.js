@@ -5,7 +5,7 @@ import contextSetupModule from './utils/contextSetup'
 import errorUtils from '../src/utils/errorUtils'
 import { rejectsWithStatuses, resolvesWithStatus, rejectsWithStatus } from './utils/jestUtils'
 
-const { getFetch, getTestContainer, contextSetup } = contextSetupModule
+const { getFetch, getTestContainer, contextSetup, getBaseUrl } = contextSetupModule
 const { Folder, File, FolderPlaceholder, FilePlaceholder, BaseFolder } = TestFolderGenerator
 
 /** @type {SolidApi} */
@@ -164,10 +164,15 @@ describe('composed methods', () => {
       describe('deleteFolderContents', () => {
         test('rejects with 404 on inexistent folder', () => rejectsWithStatuses(api.deleteFolderContents(inexistentFolder.url), [404]))
         test.todo('throws some kind of error when called on file')
-        test('resolved array contains all names of the deleted items', async () => {
+        test.only('resolved array contains all names of the deleted items', async () => {
+          console.group('TEST resolved array contains all names of the deleted items')
+          console.log('contextSetup.getBaseUrl()', getBaseUrl())
           const responses = await api.deleteFolderContents(parentFolder.url)
           const urls = responses.map(response => response.url)
           const expectedUrls = parentFolder.contents.map(item => item.url)
+          console.log(urls.sort()[0])
+          console.log(expectedUrls.sort()[0])
+          console.groupEnd()
           expect(urls.sort()).toEqual(expectedUrls.sort())
         })
         test('resolves with empty array on folder without contents', () => expect(api.deleteFolderContents(emptyFolder.url)).resolves.toHaveLength(0))
