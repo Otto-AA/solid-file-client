@@ -164,7 +164,7 @@ describe('composed methods', () => {
       describe('deleteFolderContents', () => {
         test('rejects with 404 on inexistent folder', () => rejectsWithStatuses(api.deleteFolderContents(inexistentFolder.url), [404]))
         test.todo('throws some kind of error when called on file')
-        test.only('resolved array contains all names of the deleted items', async () => {
+        test('resolved array contains all names of the deleted items', async () => {
           console.group('TEST resolved array contains all names of the deleted items')
           console.log('contextSetup.getBaseUrl()', getBaseUrl())
           const responses = await api.deleteFolderContents(parentFolder.url)

@@ -158,7 +158,7 @@ const fileWithAcl = new File('child-file.txt', 'I am a child', 'text/plain', {
             await api.copyAclFileForItem(fileWithAcl.url, targetWithAcl.url)
             await expect(api.itemExists(targetWithAcl.acl.url)).resolves.toBe(true)
         })
-        test.only('modify paths in acl file of a file to match new location', async () => {
+        test('modify paths in acl file of a file to match new location', async () => {
             fileWithAcl.acl.content = createPseudoAcl(fileWithAcl.url, fileWithAcl.name, '')
             const expectedAcl = expectedPseudoAcl(targetWithAcl.name, '')
             await fileWithAcl.acl.reset()
